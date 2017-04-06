@@ -2,7 +2,7 @@
 
 var express = require('express');
 var https = require('https');
-var mongodb = require('mongodb');
+var mongo = require('mongodb');
 var app = express();
 var offset = 1;
 var collection;
@@ -73,6 +73,6 @@ app.get('/api/latest/imagesearch/', function(err,data){
   if (err) throw err;
   collection.find().toArray(function(err,documents){
     if(err) throw err;
-    res.send(JSON.stringify(documents));
+    res.end(JSON.stringify(documents));
   });
 });
