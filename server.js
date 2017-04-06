@@ -3,6 +3,7 @@
 var express = require('express');
 var https = require('https');
 var app = express();
+var offset = 1;
 
 var port = process.env.PORT || 8080;
 
@@ -12,9 +13,12 @@ var BASE_URL = 'https://www.googleapis.com/customsearch/v1'
 
 app.get('/api/imagesearch/:id', function(req, res){
   var path = req.params.id;
-  var offset = req.query.offset;
+  if(req.query.offset){
+    offset = req.query.offset;
+    offset = offset * 10 + 1;
+  };
   var finalResponse = {};
-  var url = BASE_URL + '?q=' + req.params.id + '&cx='+ SEARCH_ENGINE_ID + '&key=' + API_KEY;
+  var url = BASE_URL + '?q=' + req.params.id + '&cx='+ SEARCH_ENGINE_ID + '&key=' + API_KEY + '&start=' + offset;
   var request = https.get(url, function (response) {
     var buffer = "",
         data,
