@@ -70,8 +70,7 @@ app.get('/api/imagesearch/:id', function(req, res){
   });
 });
 
-app.get('/api/latest/imagesearch/', function(err,data){
-  if (err) throw err;
+app.get('/api/latest/imagesearch/', function(req,res){
   collection.find().toArray(function(err,documents){
     if(err) throw err;
     res.end(JSON.stringify(documents));
