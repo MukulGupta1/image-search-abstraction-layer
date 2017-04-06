@@ -2,17 +2,40 @@
 
 var express = require('express');
 var https = require('https');
+var mongodb = require('mongodb');
 var app = express();
 var offset = 1;
+var collection;
 
 var port = process.env.PORT || 8080;
 
 var SEARCH_ENGINE_ID = '012217375386242453795%3A30e6_-vbzvc'
 var API_KEY = 'AIzaSyARLHK_qJqbiAIrY4lD1zaQTrGH93SpiGI'
 var BASE_URL = 'https://www.googleapis.com/customsearch/v1'
+var URI = process.env.MONGODB_URI
+
+mongo.connect(URI, function(err,dbase){
+  if (err) return console.log(err);
+  db = dbase;
+  collection = db.collection('search');
+  app.listen(port, function () {
+    console.log('Listening on port: ' + port);
+  });
+})
 
 app.get('/api/imagesearch/:id', function(req, res){
   var path = req.params.id;
+  var currentdate = new Date();
+  var searchObj = {};
+  searchObj.term = path;
+  searchObj.when = currentdate;
+
+  //insert into database
+  collection.insert(searchObj, function(err,data){
+    if (err) throw err;
+    console.log('Search logged inside database')
+  });
+
   if(req.query.offset){
     offset = req.query.offset;
     offset = offset * 10 + 1;
@@ -46,6 +69,10 @@ app.get('/api/imagesearch/:id', function(req, res){
   });
 });
 
-app.listen(port, function () {
-  console.log('Listening on port: ' + port);
+app.get('/api/latest/imagesearch/', function(err,data){
+  if (err) throw err;
+  collection.find().toArray(function(err,documents){
+    if(err) throw err;
+    res.send(JSON.stringify(documents));
+  });
 });
