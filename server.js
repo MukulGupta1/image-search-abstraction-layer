@@ -4,6 +4,8 @@ var express = require('express');
 var https = require('https');
 var app = express();
 
+var port = process.env.PORT || 8080;
+
 var SEARCH_ENGINE_ID = '012217375386242453795%3A30e6_-vbzvc'
 var API_KEY = 'AIzaSyARLHK_qJqbiAIrY4lD1zaQTrGH93SpiGI'
 var BASE_URL = 'https://www.googleapis.com/customsearch/v1'
@@ -40,6 +42,6 @@ app.get('/api/imagesearch/:id', function(req, res){
   });
 });
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000!')
+app.listen(port, function () {
+  console.log('Listening on port: ' + port);
 });
