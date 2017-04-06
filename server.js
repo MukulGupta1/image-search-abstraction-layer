@@ -12,9 +12,10 @@ var port = process.env.PORT || 8080;
 var SEARCH_ENGINE_ID = '012217375386242453795%3A30e6_-vbzvc'
 var API_KEY = 'AIzaSyARLHK_qJqbiAIrY4lD1zaQTrGH93SpiGI'
 var BASE_URL = 'https://www.googleapis.com/customsearch/v1'
-var URI = process.env.MONGODB_URI
+var url = process.env.MONGODB_URI
+console.log('url: ' + url);
 
-mongo.connect(URI, function(err,dbase){
+mongo.connect(url, function(err,dbase){
   if (err) return console.log(err);
   db = dbase;
   collection = db.collection('search');
